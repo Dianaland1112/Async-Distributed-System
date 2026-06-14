@@ -22,5 +22,5 @@ sqs:
 
 security:
   jwt:
-    secret: "X8jK9qL2zN5pW1rT4vY7xB3mC6hF0gD8sA1kE2oU3iR4tV9wQ5yZ6nJ0"
+    secret: ${JWT_SECRET:}
     ttl-seconds: 3600
