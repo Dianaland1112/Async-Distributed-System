@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+aws:
+  region: ap-northeast-2
+
+ddb:
+  tables:
+    event-capacity: event-capacity
+    request-state: request-state
+    worker-idempotency: worker-idempotency
+
+sqs:
+  queue-url: http://localhost:4566/000000000000/async-main-queue
+  dlq-url: http://localhost:4566/000000000000/async-main-dlq
+
+analytics:
+  event:
+    source: kr.ac.dongduk.worker
+    detail-type: ParticipationProcessed
+
+worker:
+  threads: 2
+  poll:
+    delay-ms: 3000
+    wait-seconds: 5
+    batch-size: 5
+  retry:
+    base-seconds: 2
+    max-seconds: 60
+    max-attempt: 5
+  visibility-delay-seconds: 2
+
+logging:
+  level:
+    root: INFO
+    software.amazon.awssdk: WARN
+    com.teamA.async: DEBUG

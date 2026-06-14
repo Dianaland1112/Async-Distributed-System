@@ -1,21 +1,11 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-/**
- * =========================
- * 환경 변수
- * =========================
- */
 const BASE_URL = __ENV.BASE_URL || "http://localhost:8080";
-const EVENT_ID = __ENV.EVENT_ID || "EVT-008";
-const VUS = Number(__ENV.VUS || 2000);
-const DURATION = __ENV.DURATION || "5m"; // steady-state 유지시간
+const EVENT_ID = __ENV.EVENT_ID || "EVT-001";
+const VUS = Number(__ENV.VUS || 100);      // 로컬 부하테스트: 100 (AWS: 2000)
+const DURATION = __ENV.DURATION || "5m";
 
-/**
- * =========================
- * Steady-State 시나리오
- * =========================
- */
 export const options = {
     scenarios: {
         steady: {
@@ -29,57 +19,15 @@ export const options = {
     },
 };
 
-/**
- * =========================
- * 유틸
- * =========================
- */
-function randomUserId(vu) {
-    return `user-steady-${vu}-${Math.random().toString(36).substring(2, 10)}`;
-}
-
-/**
- * =========================
- * VU별 토큰 캐시
- * =========================
- */
-let token;
-
-/**
- * =========================
- * VU 실행
- * =========================
- */
 export default function () {
-    // 1) VU별 최초 1회 로그인
-    if (!token) {
-        const userId = randomUserId(__VU);
+    const userId = `user-steady-${__VU}-${Math.random().toString(36).substring(2, 10)}`;
 
-        const loginRes = http.post(
-            `${BASE_URL}/auth/login`,
-            JSON.stringify({ userId }),
-            { headers: { "Content-Type": "application/json" } }
-        );
-
-        check(loginRes, {
-            "login status 200": (r) => r.status === 200,
-            "has accessToken": (r) => {
-                try {
-                    return r.json("accessToken") !== undefined;
-                } catch (e) {
-                    return false;
-                }
-            },
-        });
-
-        token = loginRes.json("accessToken");
-    }
-
-    // 2) 참여 요청 (비동기 enqueue) - body 검증 X
     const res = http.post(
-        `${BASE_URL}/events/${EVENT_ID}/participations`,
+        `${BASE_URL}/api/events/${EVENT_ID}/apply?eventType=FIRST_COME`,
         null,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+            headers: { "X-User-Id": userId },
+        }
     );
 
     check(res, {
