@@ -230,7 +230,8 @@ Ingest의 DB 의존성을 제거한 뒤에도 접수 성능을 별도로 검증�
   
 ## 7. 실행 방법
 
-아래 예시는 [포트폴리오 저장소](https://github.com/Dianaland1112/Async-Distributed-System)의 개선 코드 기준입니다. Java 21과 AWS 자격 증명, SQS 메인 큐·DLQ, 위 DynamoDB 테이블을 먼저 준비해야 합니다. 선착순 테스트에는 해당 eventId와 `capacityRemaining`이 설정된 이벤트 데이터가 필요합니다.
+- Java 21과 AWS 자격 증명, SQS 메인 큐·DLQ, 위 DynamoDB 테이블을 먼저 준비해야 합니다.
+- 선착순 테스트에는 해당 eventId와 `capacityRemaining`이 설정된 이벤트 데이터가 필요합니다.
 
 ```bash
 git clone https://github.com/Dianaland1112/Async-Distributed-System.git
