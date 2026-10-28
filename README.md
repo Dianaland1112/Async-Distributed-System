@@ -98,7 +98,7 @@ Ingest와 Worker를 별도 ECS 서비스로 구성해 접수 용량과 소비 �
 
 접수 경로의 DB I/O를 제거하면서, 중복 요청도 큐에 들어올 수 있게 했습니다. 그 대신 처리 직전의 중복 판정과 상태 관리를 Worker가 담당하도록 경계를 조정했습니다. 다만 SQS 전송 자체는 동기 네트워크 호출이므로, 연결 풀과 전송 지연은 여전히 접수 성능에 영향을 줍니다.
 
-근거: [ParticipationService](https://github.com/Dianaland1112/Async-Distributed-System/blob/main/ingest-api/src/main/java/com/teamA/async/ingest/service/ParticipationService.java) · [Ingest 리팩토링 기록](https://app.notion.com/p/3427db52780d80d09931e8f15edf87e9)
+근거: [ParticipationService](https://github.com/Dianaland1112/Async-Distributed-System/blob/main/ingest-api/src/main/java/com/teamA/async/ingest/service/ParticipationService.java) 
 
   
 ### 4.2. Worker의 멱등성 처리와 조건부 상태 전이
