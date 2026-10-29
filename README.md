@@ -1,4 +1,4 @@
-# Async Distributed System
+# Async Event Platform 
 
 ### 트래픽 급증을 큐로 흡수하고, 접수와 처리를 독립적으로 확장하는 비동기 이벤트 처리 시스템
 
